@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: invitely
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: python server.py
+    envVars:
+      - key: HOST
+        value: 0.0.0.0
+      - key: INVITELY_DATA_DIR
+        value: /opt/render/project/src/data
