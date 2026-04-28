@@ -1,0 +1,376 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invitely</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="page-frame">
+      <header class="site-header">
+        <button class="brand-button" id="brand-home" type="button">
+          <span class="brand-mark" id="logo-mark" aria-hidden="true">I</span>
+          <span class="brand-name" id="app-name">Invitely</span>
+        </button>
+
+        <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Open navigation menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <nav class="main-nav" id="main-nav" aria-label="Primary">
+          <button class="main-nav-link active" id="home-nav-button" type="button">Home</button>
+          <button class="main-nav-link host-link" data-nav="host" type="button">Host Sign In</button>
+        </nav>
+      </header>
+
+      <main class="page-content">
+        <section class="view active" id="home-view">
+          <section class="hero-layout">
+            <article class="surface hero-image-card">
+              <div class="event-badge" id="event-badge">Family Event</div>
+              <div class="hero-image-shell">
+                <img id="event-image" alt="Event" hidden />
+              </div>
+            </article>
+
+            <article class="hero-copy-card">
+              <div class="hero-copy-stack">
+                <p class="eyebrow">Current Invitation</p>
+                <h1 id="event-title">Loading event...</h1>
+                <p class="hero-summary" id="event-description">
+                  Pulling the latest invitation details for Invitely.
+                </p>
+              </div>
+
+              <div class="hero-timezone-card" id="hero-timezone-card">
+                <div>
+                  <p class="fact-label">Time Zones</p>
+                  <p class="timezone-copy" id="timezone-note">EST</p>
+                </div>
+                <div class="timezone-bar hidden" id="timezone-toggle" role="tablist" aria-label="Timezone toggle"></div>
+              </div>
+
+              <div class="hero-actions">
+                <button class="primary-cta" id="rsvp-now-button" type="button">RSVP Now</button>
+              </div>
+            </article>
+          </section>
+
+          <section class="fact-grid">
+            <article class="surface fact-card">
+              <p class="fact-label">Date</p>
+              <h2 id="event-date">Date TBD</h2>
+            </article>
+
+            <article class="surface fact-card accent-peach">
+              <p class="fact-label">Time</p>
+              <h2 id="event-time-range">Time TBD</h2>
+            </article>
+
+            <article class="surface fact-card">
+              <p class="fact-label">Location</p>
+              <h2 id="event-location">RSVP to see location</h2>
+              <p class="fact-support" id="event-address">Location details appear here.</p>
+              <p class="fact-support subtle" id="event-town">Town TBD</p>
+            </article>
+
+            <article class="surface fact-card accent-mint host-fact-card">
+              <div class="host-fact-top">
+                <div class="host-inline-avatar" id="host-inline-avatar">
+                  <img class="host-inline-photo" id="host-image" alt="Host" hidden />
+                  <div class="host-inline-fallback" id="host-image-fallback">H</div>
+                </div>
+                <div>
+                  <p class="fact-label">Host</p>
+                  <h2 id="host-card-name">Host TBD</h2>
+                  <p class="fact-support" id="host-role-copy">Host details show up here.</p>
+                </div>
+              </div>
+            </article>
+          </section>
+        </section>
+
+        <section class="view" id="host-view">
+          <section class="host-grid">
+            <article class="surface host-signin-card">
+              <p class="mini-label">Host Sign In</p>
+              <h2>Access your host profile</h2>
+              <p class="host-copy">Sign in to update the homepage, upload images, and manage RSVPs.</p>
+
+              <form class="signin-form" id="admin-unlock-form">
+                <label>
+                  Password
+                  <input
+                    id="admin-key"
+                    name="adminKey"
+                    type="password"
+                    placeholder="Enter host password"
+                    autocomplete="current-password"
+                  />
+                </label>
+                <button class="primary-cta" type="submit">Open host profile</button>
+                <p class="form-status" id="admin-status"></p>
+              </form>
+            </article>
+
+            <article class="surface host-summary-card hidden" id="host-summary-card">
+              <p class="mini-label">Connected storage</p>
+              <h2>Google Sheets sync</h2>
+              <p class="host-copy" id="google-status-text">Google Sheets is not connected yet.</p>
+              <div class="form-actions host-summary-actions">
+                <button class="primary-cta secondary-tone" id="connect-google-button" type="button">
+                  Connect Google Sheets
+                </button>
+                <a class="ghost-button inline-link" id="download-rsvp-button" href="/api/admin/rsvps/export">
+                  Download RSVP XLSX
+                </a>
+                <a class="inline-link hidden" id="google-sheet-link" href="#" target="_blank" rel="noreferrer">
+                  Open connected sheet
+                </a>
+              </div>
+            </article>
+          </section>
+
+          <section class="host-dashboard hidden" id="host-dashboard">
+            <article class="surface settings-card">
+              <div class="section-header">
+                <div>
+                  <p class="mini-label">Brand settings</p>
+                  <h3>Update the Invitely logo</h3>
+                </div>
+              </div>
+
+              <form class="editor-form" id="settings-form">
+                <div class="form-grid two-up">
+                  <label>
+                    App name
+                    <input id="settings-app-name" name="appName" type="text" maxlength="24" required />
+                  </label>
+                  <label>
+                    Logo mark
+                    <input id="settings-logo-mark" name="logoMark" type="text" maxlength="4" required />
+                  </label>
+                </div>
+                <div class="form-actions">
+                  <button class="primary-cta secondary-tone" type="submit">Save branding</button>
+                </div>
+                <p class="form-status" id="settings-status"></p>
+              </form>
+            </article>
+
+            <article class="surface editor-card">
+              <div class="section-header">
+                <div>
+                  <p class="mini-label">Event editor</p>
+                  <h3>Edit the homepage content</h3>
+                </div>
+                <button class="ghost-button" id="reset-editor" type="button">Reset form</button>
+              </div>
+
+              <form class="editor-form" id="event-editor-form">
+                <input id="event-id" name="eventId" type="hidden" />
+
+                <div class="form-grid two-up">
+                  <label>
+                    Event title
+                    <input id="event-title-input" name="title" type="text" />
+                  </label>
+                  <label>
+                    Event badge
+                    <input id="event-category" name="category" type="text" placeholder="Family Event" />
+                  </label>
+                </div>
+
+                <label>
+                  Event description
+                  <textarea id="event-description-input" name="description" rows="5"></textarea>
+                </label>
+
+                <div class="form-grid three-up">
+                  <label>
+                    Date
+                    <input id="event-date-input" name="startDate" type="date" />
+                  </label>
+                  <label>
+                    Start time
+                    <input id="event-start-time" name="startTime" type="time" />
+                  </label>
+                  <label>
+                    End time
+                    <input id="event-end-time" name="endTime" type="time" />
+                  </label>
+                </div>
+
+                <div class="form-grid two-up">
+                  <label>
+                    Host name
+                    <input id="event-host-input" name="host" type="text" />
+                  </label>
+                  <label>
+                    Town
+                    <input id="event-town-input" name="town" type="text" placeholder="Riverside" />
+                  </label>
+                </div>
+
+                <div class="form-grid two-up">
+                  <label>
+                    Location name
+                    <input id="event-venue" name="venue" type="text" placeholder="The Glasshouse Bistro" />
+                  </label>
+                  <label>
+                    Address line
+                    <input id="event-address" name="address" type="text" placeholder="42 Garden Terrace" />
+                  </label>
+                </div>
+
+                <div class="form-grid two-up">
+                  <label>
+                    Time zones
+                    <input id="event-timezones" name="timezones" type="text" placeholder="EST, IST" />
+                  </label>
+                  <label class="switch-label">
+                    <span>Feature this event on home</span>
+                    <input id="event-featured" name="featured" type="checkbox" />
+                  </label>
+                </div>
+
+                <div class="upload-grid">
+                  <section class="upload-card">
+                    <div class="upload-preview">
+                      <img id="event-upload-preview-image" alt="Event upload preview" hidden />
+                      <div class="upload-preview-fallback" id="event-upload-preview-placeholder">Event image</div>
+                    </div>
+                    <div class="upload-copy">
+                      <strong>Event image</strong>
+                      <span>Upload JPG, PNG, WEBP, or GIF up to 10 MB.</span>
+                    </div>
+                    <input id="event-image-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif" />
+                    <div class="upload-actions">
+                      <button class="ghost-button" data-upload-kind="event" type="button">Upload image</button>
+                    </div>
+                    <label>
+                      Saved image URL
+                      <input id="event-image-url" name="eventImageUrl" type="text" placeholder="Uploads fill this automatically" />
+                    </label>
+                  </section>
+
+                  <section class="upload-card" id="host-upload-card">
+                    <div class="upload-preview host-preview">
+                      <img id="host-upload-preview-image" alt="Host upload preview" hidden />
+                      <div class="upload-preview-fallback" id="host-upload-preview-placeholder">Host image</div>
+                    </div>
+                    <div class="upload-copy">
+                      <strong>Host image</strong>
+                      <span>Upload a portrait or leave it empty if you want initials instead.</span>
+                    </div>
+                    <input id="host-image-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif" />
+                    <div class="upload-actions">
+                      <button class="ghost-button" data-upload-kind="host" type="button">Upload image</button>
+                    </div>
+                    <label>
+                      Saved image URL
+                      <input id="host-image-url" name="hostImageUrl" type="text" placeholder="Uploads fill this automatically" />
+                    </label>
+                  </section>
+                </div>
+
+                <div class="form-actions">
+                  <button class="primary-cta secondary-tone" type="submit">Save event</button>
+                </div>
+                <p class="form-status" id="editor-status"></p>
+              </form>
+            </article>
+
+            <article class="surface list-card">
+              <p class="mini-label">Saved events</p>
+              <h3>Current event list</h3>
+              <div class="host-list" id="admin-event-list"></div>
+            </article>
+
+            <article class="surface list-card">
+              <p class="mini-label">Recent RSVP activity</p>
+              <h3>Responses</h3>
+              <div class="host-list" id="admin-rsvp-list"></div>
+            </article>
+          </section>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <div class="footer-brand">
+          <span class="brand-mark footer-mark" id="footer-logo-mark" aria-hidden="true">I</span>
+          <strong id="footer-app-name">Invitely</strong>
+        </div>
+        <p>made in sikkim</p>
+      </footer>
+    </div>
+
+    <div class="modal-backdrop hidden" id="rsvp-modal" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="rsvp-modal-title">
+        <button class="modal-close" id="close-rsvp-modal" type="button" aria-label="Close RSVP">&times;</button>
+
+        <div class="modal-view" id="rsvp-form-view">
+          <p class="mini-label">RSVP</p>
+          <h2 id="rsvp-modal-title">Reply to this invitation</h2>
+          <form class="rsvp-form modal-form" id="rsvp-form">
+            <input id="selected-event-id" name="selectedEventId" type="hidden" />
+
+            <label>
+              Your response
+              <select id="rsvp-response-select" name="response" required>
+                <option value="">Pick one</option>
+                <option value="Going">Yes</option>
+                <option value="Unsure">Maybe</option>
+                <option value="Declined">No</option>
+              </select>
+            </label>
+
+            <div class="form-grid two-up">
+              <label>
+                Full name
+                <input id="guest-name" name="name" type="text" placeholder="Type Name Here" required />
+              </label>
+              <label>
+                Number
+                <input id="guest-count" name="guestCount" type="number" min="1" max="8" value="1" required />
+              </label>
+            </div>
+
+            <div class="form-grid two-up">
+              <label>
+                Email or phone number
+                <input id="guest-email" name="email" type="text" placeholder="you@email.com or +91 98765 43210" />
+              </label>
+              <label>
+                Note
+                <input id="guest-notes" name="notes" type="text" placeholder="allergies, special requests, etc." />
+              </label>
+            </div>
+
+            <div class="form-actions">
+              <button class="primary-cta" type="submit">Send RSVP</button>
+            </div>
+            <p class="form-status" id="rsvp-status"></p>
+          </form>
+        </div>
+
+        <div class="modal-view hidden success-view" id="rsvp-success-view">
+          <div class="success-burst"></div>
+          <div class="success-check">&#10003;</div>
+          <h2>Response Recorded</h2>
+          <p>Your RSVP is in. The host will see it right away.</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
